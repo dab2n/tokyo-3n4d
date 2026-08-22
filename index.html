@@ -35,6 +35,7 @@ body{
   -webkit-font-smoothing:antialiased;
   -webkit-tap-highlight-color:transparent;
 }
+body.locked{overflow:hidden}
 :focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
 .heart{width:1em;height:1em;flex:0 0 auto;display:block}
 
@@ -47,12 +48,10 @@ body{
   transition:opacity .5s ease,visibility .5s;
 }
 #intro.done{opacity:0;visibility:hidden;pointer-events:none}
-
 .stack{
   position:relative;
   width:min(74vw,300px);
   aspect-ratio:4/3;
-  margin-bottom:0;
   transition:transform .6s cubic-bezier(.22,1,.36,1);
 }
 .stack img{
@@ -75,32 +74,22 @@ body{
   100%{opacity:1;transform:translate3d(var(--x),var(--y),0) scale(1) rotate(var(--r))}
 }
 .stack.settle{transform:scale(.9)}
-
 .intro-type{
-  text-align:center;
-  margin-top:38px;
+  text-align:center;margin-top:38px;
   opacity:0;transform:translateY(8px);
   transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1);
 }
 .intro-type.in{opacity:1;transform:none}
 .intro-eyebrow{
   display:flex;align-items:center;justify-content:center;gap:7px;
-  font-size:11px;letter-spacing:.16em;color:var(--muted);
-  margin:0 0 14px;
+  font-size:11px;letter-spacing:.16em;color:var(--muted);margin:0 0 14px;
 }
-.intro-title{
-  font-size:clamp(30px,8.6vw,38px);font-weight:800;
-  letter-spacing:-0.035em;margin:0;
-}
-.intro-sub{
-  margin:12px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.75;font-weight:400;
-}
+.intro-title{font-size:clamp(30px,8.6vw,38px);font-weight:800;letter-spacing:-0.035em;margin:0}
+.intro-sub{margin:12px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.75;font-weight:400}
 .intro-skip{
-  margin-top:32px;
-  font-family:inherit;letter-spacing:inherit;
+  margin-top:32px;font-family:inherit;letter-spacing:inherit;
   border:1px solid var(--ink);background:var(--ink);color:#fff;
-  font-size:13px;font-weight:600;
-  padding:11px 26px;border-radius:100px;cursor:pointer;
+  font-size:13px;font-weight:600;padding:11px 26px;border-radius:100px;cursor:pointer;
 }
 
 /* ───────────── 헤더 ───────────── */
@@ -112,43 +101,27 @@ header{
   border-bottom:1px solid var(--hair);
 }
 .wrap{max-width:620px;margin:0 auto;padding-left:20px;padding-right:20px}
-.brandline{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding-top:16px;
-}
-.brand{
-  display:flex;align-items:center;gap:7px;
-  font-size:17px;font-weight:800;letter-spacing:-0.035em;margin:0;
-}
-.stay{font-size:11.5px;color:var(--muted);white-space:nowrap;font-weight:500}
+.brandline{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:16px}
+.brand{display:flex;align-items:center;gap:7px;font-size:17px;font-weight:800;letter-spacing:-0.035em;margin:0}
+.stay{font-size:11.5px;color:var(--muted);white-space:nowrap;font-weight:500;font-variant-numeric:tabular-nums}
 .search-wrap{position:relative;margin-top:13px}
 #q{
-  width:100%;
-  font-family:inherit;letter-spacing:inherit;font-size:15px;font-weight:400;
-  padding:12px 38px 12px 40px;
-  border:1px solid var(--hair);border-radius:12px;
+  width:100%;font-family:inherit;letter-spacing:inherit;font-size:15px;font-weight:400;
+  padding:12px 38px 12px 40px;border:1px solid var(--hair);border-radius:12px;
   background:var(--field);color:var(--ink);
 }
 #q::placeholder{color:var(--muted)}
 #q:focus{background:#fff;border-color:var(--ink);outline:none}
-.s-ico{
-  position:absolute;left:14px;top:50%;transform:translateY(-50%);
-  width:15px;height:15px;color:var(--muted);
-}
+.s-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--muted)}
 .s-clear{
   position:absolute;right:6px;top:50%;transform:translateY(-50%);
-  border:0;background:transparent;color:var(--muted);
+  border:0;background:transparent;color:var(--muted);font-family:inherit;
   font-size:19px;line-height:1;cursor:pointer;padding:6px 10px;display:none;
-  font-family:inherit;
 }
-.chips{
-  display:flex;gap:6px;overflow-x:auto;padding:13px 0 14px;
-  scrollbar-width:none;
-}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:13px 0 14px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{
-  flex:0 0 auto;
-  display:inline-flex;align-items:center;gap:6px;
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
   font-family:inherit;letter-spacing:inherit;font-size:13px;font-weight:600;
   padding:8px 15px;border-radius:100px;cursor:pointer;
   border:1px solid var(--hair);background:#fff;color:var(--ink-2);
@@ -156,87 +129,159 @@ header{
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
 .chip .heart{display:none}
 .chip[aria-pressed="true"] .heart{display:block}
+.chip small{font-weight:500;opacity:.6;font-size:11px}
 
 /* ───────────── 스케줄 ───────────── */
 main{max-width:620px;margin:0 auto;padding:0 20px 80px}
 .day{padding-top:38px;scroll-margin-top:160px}
 .day-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .day-num{
-  font-size:11.5px;font-weight:700;letter-spacing:.16em;color:var(--muted);
-  font-variant-numeric:tabular-nums;
+  font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--muted);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
 }
 .day-rule{flex:1;height:1px;background:var(--hair)}
 .day-title{font-size:21px;font-weight:800;letter-spacing:-0.035em;margin:0}
 .day-meta{margin:6px 0 20px;font-size:12.5px;color:var(--muted);line-height:1.65;font-weight:400}
 
 .item{
-  display:grid;grid-template-columns:50px 1fr;gap:14px;
-  padding:16px 0;border-top:1px solid var(--hair-2);
+  width:100%;text-align:left;
+  display:grid;grid-template-columns:46px 1fr 44px;gap:13px;align-items:start;
+  padding:16px 0;border:0;border-top:1px solid var(--hair-2);
+  background:transparent;font-family:inherit;letter-spacing:inherit;color:inherit;
+  cursor:pointer;
 }
 .day .item:first-of-type{border-top:0;padding-top:0}
-.time{
-  font-size:13px;font-weight:700;color:var(--ink);
-  font-variant-numeric:tabular-nums;padding-top:1px;
+.item:active{background:var(--hair-2)}
+.time{font-size:13px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;padding-top:2px}
+.thumb{
+  width:44px;height:44px;border-radius:11px;
+  border:1px solid var(--hair);background:var(--hair-2);
+  display:grid;place-items:center;color:var(--ink);
 }
-.kind{
-  font-size:10.5px;font-weight:600;color:var(--muted);
-  letter-spacing:.1em;margin:0 0 4px;
-}
+.thumb svg{width:22px;height:22px}
+.thumb svg,.hero svg{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.kind{display:block;font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.1em;margin:0 0 4px}
 .name{font-size:15.5px;font-weight:700;margin:0;line-height:1.45;letter-spacing:-0.028em}
-.addr{
-  display:inline-flex;align-items:center;gap:7px;
-  margin-top:9px;
+.addr-row{
+  display:inline-flex;align-items:center;gap:7px;margin-top:9px;
   font-size:13px;font-weight:500;color:var(--ink);text-decoration:none;
-  background:#fff;border:1px solid var(--hair);
-  padding:8px 12px;border-radius:10px;line-height:1.35;
+  background:#fff;border:1px solid var(--hair);padding:8px 12px;border-radius:10px;line-height:1.35;
 }
-.addr:active{background:var(--hair-2)}
-.addr .go{color:var(--muted);font-size:11px;font-weight:500;white-space:nowrap}
+.addr-row:active{background:var(--hair-2)}
+.addr-row .go{color:var(--muted);font-size:11px;font-weight:500;white-space:nowrap}
 .move{
   margin:9px 0 0;font-size:12.5px;color:var(--muted);line-height:1.65;font-weight:400;
   padding-left:15px;position:relative;
 }
-.move::before{
-  content:"";position:absolute;left:0;top:9px;
-  width:8px;height:1px;background:var(--muted);opacity:.55;
-}
+.move::before{content:"";position:absolute;left:0;top:9px;width:8px;height:1px;background:var(--muted);opacity:.55}
 .note{
-  display:flex;align-items:flex-start;gap:6px;
-  margin:8px 0 0;font-size:12px;color:var(--ink);font-weight:600;line-height:1.5;
+  display:flex;align-items:flex-start;gap:6px;margin:8px 0 0;
+  font-size:12px;color:var(--ink);font-weight:600;line-height:1.5;
 }
 .note .heart{margin-top:2px}
-.empty{
-  text-align:center;color:var(--muted);font-size:14px;
-  padding:70px 20px;display:none;font-weight:500;
+.tbd{
+  display:inline-block;margin-top:9px;font-size:12px;font-weight:600;color:var(--ink);
+  border:1px dashed var(--muted);border-radius:9px;padding:7px 11px;
 }
+.empty{text-align:center;color:var(--muted);font-size:14px;padding:70px 20px;display:none;font-weight:500}
 footer{
-  max-width:620px;margin:0 auto;padding:32px 20px 60px;
-  border-top:1px solid var(--hair);
+  max-width:620px;margin:0 auto;padding:32px 20px 60px;border-top:1px solid var(--hair);
   font-size:12px;color:var(--muted);line-height:1.8;font-weight:400;
 }
+
+/* ───────────── 상세 시트 ───────────── */
+#sheet{
+  position:fixed;inset:0;z-index:70;display:none;
+}
+#sheet.open{display:block}
+.veil{
+  position:absolute;inset:0;background:rgba(11,11,12,.32);
+  opacity:0;transition:opacity .3s ease;
+}
+#sheet.in .veil{opacity:1}
+.panel{
+  position:absolute;left:0;right:0;bottom:0;
+  max-width:620px;margin:0 auto;
+  max-height:88vh;overflow-y:auto;overscroll-behavior:contain;
+  background:#fff;border-radius:22px 22px 0 0;
+  transform:translateY(100%);transition:transform .36s cubic-bezier(.22,1,.36,1);
+  padding-bottom:calc(28px + env(safe-area-inset-bottom));
+}
+#sheet.in .panel{transform:none}
+.grip{width:38px;height:4px;border-radius:99px;background:var(--hair);margin:10px auto 0}
+.hero{
+  margin:18px 20px 0;height:132px;border-radius:16px;
+  border:1px solid var(--hair);background:var(--hair-2);
+  display:grid;place-items:center;color:var(--ink);
+}
+.hero svg{width:56px;height:56px}
+.sheet-body{padding:18px 20px 0}
+.sheet-kind{font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.1em;margin:0 0 5px}
+.sheet-name{font-size:20px;font-weight:800;letter-spacing:-0.035em;margin:0;line-height:1.35}
+.sheet-when{margin:8px 0 0;font-size:12.5px;color:var(--muted);font-weight:500}
+.sheet-map{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:16px;padding:14px;border-radius:13px;
+  background:var(--ink);color:#fff;text-decoration:none;
+  font-size:14px;font-weight:700;
+}
+.sheet-move{
+  margin:14px 0 0;padding:13px 15px;border-radius:12px;background:var(--field);
+  font-size:12.5px;color:var(--ink-2);line-height:1.7;font-weight:400;
+}
+.ph-head{
+  display:flex;align-items:center;gap:7px;
+  margin:26px 0 12px;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--ink);
+}
+.ph{padding:13px 0;border-top:1px solid var(--hair-2)}
+.ph .jp{margin:0;font-size:15px;font-weight:700;line-height:1.5;letter-spacing:-0.01em}
+.ph .rd{margin:5px 0 0;font-size:12.5px;color:var(--ink-2);font-weight:500}
+.ph .ko{margin:3px 0 0;font-size:12.5px;color:var(--muted);font-weight:400}
+.sheet-close{
+  width:100%;margin-top:24px;padding:14px;border-radius:13px;
+  border:1px solid var(--hair);background:#fff;color:var(--ink);
+  font-family:inherit;letter-spacing:inherit;font-size:14px;font-weight:600;cursor:pointer;
+}
+
 @media (prefers-reduced-motion:reduce){
   .stack.go img{animation-duration:.01ms;animation-delay:0s}
-  .stack,.intro-type,#intro{transition:none}
+  .stack,.intro-type,#intro,.panel,.veil{transition:none}
 }
 </style>
 </head>
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-heart" viewBox="0 0 24 24">
-    <path fill="currentColor" d="M12 20.7 3.9 12.9C1.6 10.6 1.7 6.9 4 4.7a5.4 5.4 0 0 1 7.5.2l.5.5.5-.5A5.4 5.4 0 0 1 20 4.7c2.3 2.2 2.4 5.9.1 8.2L12 20.7Z"/>
-  </symbol>
-  <symbol id="i-search" viewBox="0 0 24 24">
-    <path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M10.5 17a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13Zm4.8.3L20 21.5"/>
-  </symbol>
+<defs>
+  <g id="g-heart"><path fill="currentColor" d="M12 20.7 3.9 12.9C1.6 10.6 1.7 6.9 4 4.7a5.4 5.4 0 0 1 7.5.2l.5.5.5-.5A5.4 5.4 0 0 1 20 4.7c2.3 2.2 2.4 5.9.1 8.2L12 20.7Z"/></g>
+  <g id="g-search"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M10.5 17a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13Zm4.8.3L20 21.5"/></g>
+</defs>
+<symbol id="i-heart" viewBox="0 0 24 24"><use href="#g-heart"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><use href="#g-search"/></symbol>
+
+<symbol id="ic-ramen" viewBox="0 0 24 24"><path d="M3.5 10h17c0 5-3.8 8.5-8.5 8.5S3.5 15 3.5 10Z"/><path d="M2 19.5h20"/><path d="M8 10c0-2 1.5-3 1.5-4.5S8 3.5 8 3.5"/><path d="M12.5 10c0-2 1.5-3 1.5-4.5s-1.5-2-1.5-2"/></symbol>
+<symbol id="ic-pancake" viewBox="0 0 24 24"><ellipse cx="12" cy="8" rx="7.5" ry="3"/><path d="M4.5 8v2.4c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V8"/><path d="M4.5 12.6V15c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-2.4"/><path d="M12 5V2.5"/></symbol>
+<symbol id="ic-coffee" viewBox="0 0 24 24"><path d="M4 8.5h13v6a4.5 4.5 0 0 1-4.5 4.5h-4A4.5 4.5 0 0 1 4 14.5v-6Z"/><path d="M17 10h1.8a2.6 2.6 0 0 1 0 5.2H17"/><path d="M7.5 5.5V3.2M11 5.5V3.2M14.5 5.5V3.2"/></symbol>
+<symbol id="ic-sweets" viewBox="0 0 24 24"><path d="M4 20.5h16"/><path d="M5.5 20.5v-4a6.5 6.5 0 0 1 13 0v4"/><path d="M12 10V6.5"/><path d="M12 6.5c1.6 0 2.6-1 2.6-2.4-1.6 0-2.6 1-2.6 2.4Zm0 0C10.4 6.5 9.4 5.5 9.4 4.1c1.6 0 2.6 1 2.6 2.4Z"/></symbol>
+<symbol id="ic-rice" viewBox="0 0 24 24"><path d="M3.5 11.5h17c0 4.4-3.8 7.5-8.5 7.5s-8.5-3.1-8.5-7.5Z"/><path d="M6.5 11.5c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5"/><path d="M12 6V3.5"/><path d="M2 19.5h20"/></symbol>
+<symbol id="ic-museum" viewBox="0 0 24 24"><path d="M3 9.5 12 4l9 5.5"/><path d="M4.5 9.5v9M9 9.5v9M15 9.5v9M19.5 9.5v9"/><path d="M2.5 19.5h19"/></symbol>
+<symbol id="ic-shop" viewBox="0 0 24 24"><path d="M5 8h14l-1 12.5H6L5 8Z"/><path d="M8.8 8V6a3.2 3.2 0 0 1 6.4 0v2"/></symbol>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5C10.4 5 8.3 4.2 5 4.2v13c3.3 0 5.4.8 7 2.3 1.6-1.5 3.7-2.3 7-2.3v-13c-3.3 0-5.4.8-7 2.3Z"/><path d="M12 6.5v13.3"/></symbol>
+<symbol id="ic-park" viewBox="0 0 24 24"><path d="M12 3.5 6.5 12h11L12 3.5Z"/><path d="M12 8.5 7.5 15.5h9L12 8.5Z"/><path d="M12 15.5v5"/><path d="M8.5 20.5h7"/></symbol>
+<symbol id="ic-bar" viewBox="0 0 24 24"><path d="M4 4.5h16L12 13 4 4.5Z"/><path d="M12 13v7"/><path d="M8 20.5h8"/><path d="M7 7.5h10"/></symbol>
+<symbol id="ic-hotel" viewBox="0 0 24 24"><path d="M3 18.5v-13"/><path d="M3 11.5h18v7"/><path d="M3 15.5h18"/><path d="M6.5 11.5V9h4.5v2.5"/></symbol>
+<symbol id="ic-plane" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M10.5 3.5c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5v5.2l7.5 4.4v2.2l-7.5-2.4v4.3l2.5 1.9v1.4L12 19.6l-4 .9v-1.4l2.5-1.9v-4.3L3 15.3v-2.2l7.5-4.4V3.5Z"/></symbol>
+<symbol id="ic-night" viewBox="0 0 24 24"><path d="M3 20.5V9l5-2.5V20.5"/><path d="M8 20.5V4l7 3v13.5"/><path d="M15 20.5v-8l6 2.5v6"/><path d="M2 20.5h20"/><circle cx="18.5" cy="6" r="2.5"/></symbol>
+<symbol id="ic-friends" viewBox="0 0 24 24"><circle cx="8" cy="7" r="3"/><circle cx="16.5" cy="8" r="2.5"/><path d="M2.5 20c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5"/><path d="M15 14.8c3 .3 5.5 2.6 5.5 5.2"/></symbol>
+<symbol id="ic-plaza" viewBox="0 0 24 24"><path d="M4 20.5V7.5h16v13"/><path d="M4 7.5 6 3.5h12l2 4"/><path d="M9.5 20.5v-6h5v6"/><path d="M2.5 20.5h19"/></symbol>
 </svg>
 
 <div id="intro">
   <div class="stack" id="stack"></div>
   <div class="intro-type" id="introType">
-    <p class="intro-eyebrow"><svg class="heart"><use href="#i-heart"/></svg>TOKYO 3N 4D</p>
+    <p class="intro-eyebrow"><svg class="heart"><use href="#i-heart"/></svg>8.25 TUE – 8.28 FRI</p>
     <h1 class="intro-title">도쿄 3박 4일</h1>
-    <p class="intro-sub">비아 인 아키하바라 · 도쿄서브웨이 패스<br>주소를 누르면 구글 지도로 바로 열려요</p>
+    <p class="intro-sub">비아 인 아키하바라 · 도쿄서브웨이 패스<br>일정을 누르면 지도와 일본어 표현이 열려요</p>
     <button class="intro-skip" id="skip">일정 보기</button>
   </div>
 </div>
@@ -245,7 +290,7 @@ footer{
   <div class="wrap">
     <div class="brandline">
       <h1 class="brand"><svg class="heart"><use href="#i-heart"/></svg>도쿄 3박 4일</h1>
-      <span class="stay">비아 인 아키하바라</span>
+      <span class="stay">8.25 – 8.28</span>
     </div>
     <div class="search-wrap">
       <svg class="s-ico"><use href="#i-search"/></svg>
@@ -261,76 +306,179 @@ footer{
 
 <footer>
   전 일정 도쿄메트로 · 토에이 지하철만 사용 (JR · 사철 미사용)<br>
-  네즈미술관 월요일 · 21_21 화요일 휴관 · 츠지한 웨이팅 1시간
+  8/26 수 네즈미술관 정상 운영 · 8/27 목 21_21 정상 운영 · 츠지한 웨이팅 1시간
 </footer>
 
+<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetName">
+  <div class="veil" data-close></div>
+  <div class="panel">
+    <div class="grip"></div>
+    <div class="hero"><svg id="sheetIcon"><use href="#ic-shop"/></svg></div>
+    <div class="sheet-body">
+      <p class="sheet-kind" id="sheetKind"></p>
+      <h2 class="sheet-name" id="sheetName"></h2>
+      <p class="sheet-when" id="sheetWhen"></p>
+      <a class="sheet-map" id="sheetMap" target="_blank" rel="noopener">
+        <svg class="heart"><use href="#i-heart"/></svg>구글 지도 열기
+      </a>
+      <p class="sheet-move" id="sheetMove"></p>
+      <div class="ph-head"><svg class="heart"><use href="#i-heart"/></svg><span>여기서 쓸 일본어</span></div>
+      <div id="sheetPh"></div>
+      <button class="sheet-close" data-close>닫기</button>
+    </div>
+  </div>
+</div>
+
 <script>
+/* ───────── 일본어 표현 세트 ───────── */
+const P={
+ rest:[
+  ["おすすめは何ですか？","오스스메와 난데스카","추천 메뉴가 있나요?"],
+  ["これを2つください。","코레오 후타츠 쿠다사이","이거 2개 주세요."],
+  ["取り皿をください。","토리자라오 쿠다사이","앞접시 주세요."],
+  ["トイレはどこですか？","토이레와 도코데스카","화장실은 어디인가요?"],
+  ["お会計お願いします。","오카이케이 오네가이시마스","계산 부탁드려요."],
+  ["カードで払えますか？","카-도데 하라에마스카","카드로 결제 되나요?"]],
+ ramen:[
+  ["おすすめは何ですか？","오스스메와 난데스카","추천 메뉴가 있나요?"],
+  ["これを2つください。","코레오 후타츠 쿠다사이","이거 2개 주세요."],
+  ["辛さは普通でお願いします。","카라사와 후츠-데 오네가이시마스","맵기는 보통으로 해주세요."],
+  ["麺の量は普通で。","멘노 료-와 후츠-데","면 양은 보통으로요."],
+  ["お水をください。","오미즈오 쿠다사이","물 좀 주세요."],
+  ["ごちそうさまでした。","고치소-사마데시타","잘 먹었습니다."]],
+ cafe:[
+  ["ここで飲みます。","코코데 노미마스","여기서 마실게요."],
+  ["持ち帰りでお願いします。","모치카에리데 오네가이시마스","포장해 주세요."],
+  ["おすすめのコーヒーは？","오스스메노 코-히-와","추천 커피는 뭐예요?"],
+  ["Wi-Fiのパスワードを教えてください。","와이화이노 파스와-도오 오시에테 쿠다사이","와이파이 비밀번호 알려주세요."],
+  ["コンセントはありますか？","콘센토와 아리마스카","콘센트 있나요?"]],
+ shop:[
+  ["見ているだけです。","미테이루 다케데스","그냥 구경 중이에요."],
+  ["これ、在庫はありますか？","코레, 자이코와 아리마스카","이거 재고 있나요?"],
+  ["免税できますか？","멘제이 데키마스카","면세 되나요?"],
+  ["袋をください。","후쿠로오 쿠다사이","봉투 주세요."],
+  ["別々に包んでください。","베츠베츠니 츠츤데 쿠다사이","따로따로 포장해 주세요."]],
+ museum:[
+  ["チケットを2枚ください。","치켓토오 니마이 쿠다사이","티켓 2장 주세요."],
+  ["写真を撮ってもいいですか？","샤신오 톳테모 이-데스카","사진 찍어도 되나요?"],
+  ["荷物を預けられますか？","니모츠오 아즈케라레마스카","짐 맡길 수 있나요?"],
+  ["最終入場は何時ですか？","사이슈- 뉴-조-와 난지데스카","마지막 입장은 몇 시인가요?"],
+  ["出口はどちらですか？","데구치와 도치라데스카","출구는 어느 쪽인가요?"]],
+ hotel:[
+  ["荷物を預かってもらえますか？","니모츠오 아즈캇테 모라에마스카","짐 좀 맡아주실 수 있나요?"],
+  ["チェックインは何時からですか？","체크인와 난지카라데스카","체크인은 몇 시부터인가요?"],
+  ["鍵をなくしました。","카기오 나쿠시마시타","키를 잃어버렸습니다."],
+  ["部屋に虫がいます。","헤야니 무시가 이마스","방에 벌레가 있습니다."],
+  ["タオルをもう一枚ください。","타오루오 모- 이치마이 쿠다사이","수건 한 장 더 주세요."],
+  ["Wi-Fiがつながりません。","와이화이가 츠나가리마센","와이파이가 안 돼요."]],
+ bar:[
+  ["おすすめのカクテルは？","오스스메노 카쿠테루와","추천 칵테일은 뭐예요?"],
+  ["夜景の見える席はありますか？","야케이노 미에루 세키와 아리마스카","야경 보이는 자리 있나요?"],
+  ["予約はしていません。2名です。","요야쿠와 시테이마센. 니메이데스","예약은 안 했어요. 2명이에요."],
+  ["お水もください。","오미즈모 쿠다사이","물도 주세요."]],
+ out:[
+  ["写真を撮ってもらえますか？","샤신오 톳테 모라에마스카","사진 좀 찍어주실 수 있나요?"],
+  ["この近くにトイレはありますか？","코노 치카쿠니 토이레와 아리마스카","이 근처에 화장실 있나요?"],
+  ["ここは何時までですか？","코코와 난지마데데스카","여기는 몇 시까지예요?"]],
+ move:[
+  ["この電車は◯◯に止まりますか？","코노 덴샤와 ◯◯니 토마리마스카","이 전철은 ◯◯에 서나요?"],
+  ["◯◯駅はどうやって行きますか？","◯◯에키와 도-얏테 이키마스카","◯◯역은 어떻게 가나요?"],
+  ["この切符で乗れますか？","코노 킷푸데 노레마스카","이 티켓으로 탈 수 있나요?"],
+  ["空港まで何分かかりますか？","쿠-코-마데 난푼 카카리마스카","공항까지 몇 분 걸리나요?"]],
+ friends:[
+  ["久しぶり！会いたかった！","히사시부리! 아이타캇타!","오랜만이야! 보고 싶었어!"],
+  ["紹介するね、私の彼氏です。","쇼-카이스루네, 와타시노 카레시데스","소개할게, 내 남자친구야."],
+  ["はじめまして、よろしくお願いします。","하지메마시테, 요로시쿠 오네가이시마스","처음 뵙겠습니다, 잘 부탁드려요."],
+  ["お二人はどうやって出会ったんですか？","오후타리와 도-얏테 데앗탄데스카","두 분은 어떻게 만나셨어요?"],
+  ["付き合ってどれくらいですか？","츠키앗테 도레쿠라이데스카","사귄 지 얼마나 되셨어요?"],
+  ["日本語まだ下手だけど、頑張るね。","니혼고 마다 헤타다케도, 감바루네","일본어 아직 서툴지만 열심히 해볼게."],
+  ["東京でおすすめの場所ありますか？","토-쿄-데 오스스메노 바쇼 아리마스카","도쿄에서 추천하는 곳 있어요?"],
+  ["何が食べたい？私は何でも大丈夫！","나니가 타베타이? 와타시와 난데모 다이조-부!","뭐 먹고 싶어? 난 아무거나 괜찮아!"],
+  ["みんなで写真撮ろう！","민나데 샤신 토로-!","다같이 사진 찍자!"],
+  ["今日は本当に楽しかった。また会おうね。","쿄-와 혼토-니 타노시캇타. 마타 아오-네","오늘 정말 즐거웠어. 또 만나자."]]
+};
+
+/* ───────── 일정 ───────── */
 const DAYS=[
- {n:1,title:"아키하바라 · 마루노우치 · 긴자",meta:"체크인하고 도쿄 첫 분위기 가볍게 즐기는 날",items:[
-  {t:"13:00",k:"숙소",name:"숙소 짐 맡기기",addr:"칸다 스다초 2-19-4",q:"ヴィアイン秋葉原 神田須田町2-19-4",move:"공항에서 이동 · 아와지초 / 오가와마치역 도보 4분"},
-  {t:"13:30",k:"점심",name:"키칸보 (매운 미소라멘)",addr:"카지초 2-10-9",q:"カラシビ味噌らー麺 鬼金棒 神田本店",move:"숙소에서 도보 6분"},
-  {t:"15:00",k:"카페",name:"에고랜드 카페 아키하바라",addr:"칸다사쿠마초 4-7-3 1F",q:"Egoland Cafe Akihabara 神田佐久間町4-7-3",move:"도보 12분"},
-  {t:"16:30",k:"쇼핑",name:"굿디자인스토어 (KITTE 마루노우치 3F)",addr:"마루노우치 2-7-2",q:"Good Design Store TOKYO by NOHARA KITTE丸の内",move:"마루노우치선 도쿄역 도보 1분"},
-  {t:"17:00",k:"전시",name:"GOOD DESIGN Marunouchi",addr:"마루노우치 3-4-1 신국제빌딩 1F",q:"GOOD DESIGN Marunouchi 新国際ビル",move:"도보 8분"},
-  {t:"17:40",k:"쇼핑",name:"긴자 이토야",addr:"긴자 2-7-15",q:"銀座・伊東屋 銀座2-7-15",move:"도보 8분"},
-  {t:"19:00",k:"저녁",name:"#카츠동은 사람을 행복하게 한다 긴자점",addr:"긴자 6-12-2 B1F",q:"#カツ丼は人を幸せにする 銀座店",move:"도보 8분 · 귀가는 긴자선"}]},
- {n:2,title:"시부야 · 오모테산도 · 다이칸야마",meta:"감성 동네를 천천히 걷고 구경하는 날",items:[
-  {t:"09:00",k:"아침",name:"시아와세노 팬케이크 시부야점",addr:"도겐자카 1-18-8 3F",q:"幸せのパンケーキ渋谷店",move:"아와지초 마루노우치선 → 아카사카미츠케 환승 긴자선 시부야, 도보 4분",note:"오픈런 권장 · 대기 20~40분"},
-  {t:"11:00",k:"쇼핑",name:"시부야 히카리에",addr:"시부야 2-21-1",q:"渋谷ヒカリエ",move:"시부야역 직결"},
-  {t:"12:30",k:"점심",name:"이꾸라 시부야점 (함박 · 오므라이스)",addr:"마루야마초 5-3 1F",q:"いくら渋谷店 はんばーぐ&おむらいすのお店",move:"도보 8분"},
-  {t:"14:00",k:"쇼핑",name:"도큐 플라자 오모테산도 — 구글스토어 1F · 치이카와 베이커리 3F",addr:"진구마에 4-30-3",q:"東急プラザ表参道 オモカド",move:"긴자선 시부야 → 오모테산도 1정거장, 도보 7분",note:"두 곳이 같은 건물"},
-  {t:"15:00",k:"쇼핑",name:"모마 디자인 스토어",addr:"진구마에 5-10-1 GYRE 3F",q:"MoMA Design Store 表参道 GYRE",move:"도보 5분"},
-  {t:"15:40",k:"전시",name:"네즈미술관 · 네즈카페",addr:"미나미아오야마 6-5-1",q:"根津美術館",move:"도보 8분",note:"16:30 최종입장 · 월요일 휴관"},
-  {t:"17:30",k:"서점",name:"다이칸야마 츠타야 서점",addr:"사루가쿠초 17-5",q:"代官山 蔦屋書店",move:"긴자선 시부야 후 도보 15분 (도요코선은 패스 미적용)"},
-  {t:"19:00",k:"저녁",name:"epulor on the winding path (레코드카페 · 와인바)",addr:"에비스니시 2-17-4 2F",q:"epulor on the winding path 恵比寿西",move:"도보 8분 · 귀가는 히비야선 에비스역 → 아키하바라 직통"}]},
- {n:3,title:"시바 · 히비야 · 롯폰기 · 토라노몬",meta:"공원부터 디자인, 야경까지 알차게 도는 날",items:[
-  {t:"09:30",k:"공원",name:"시바 공원",addr:"시바코엔 4-10-17",q:"芝公園 港区芝公園4-10-17",move:"신주쿠선 → 진보초 환승 미타선 시바코엔역 도보 2분"},
-  {t:"11:00",k:"전시",name:"MoN 타카나와",addr:"미타 3-16-1",q:"MoN Takanawa The Museum of Narratives",move:"미타선 2정거장 미타역 도보 8분",note:"유일한 왕복 구간 · 시간 빠듯하면 생략"},
-  {t:"12:30",k:"점심",name:"DONA 히비야 (이탈리안)",addr:"유라쿠초 1-2-5 B1F",q:"イタリアンダイニングドナ 日比谷店",move:"미타선 히비야역 도보 2분"},
-  {t:"14:00",k:"전시",name:"21_21 DESIGN SIGHT",addr:"아카사카 9-7-6 도쿄 미드타운",q:"21_21 DESIGN SIGHT",move:"히비야선 롯폰기역 도보 5분",note:"화요일 휴관"},
-  {t:"15:30",k:"쇼핑",name:"아자부다이 힐즈 + The Conran Shop 3F",addr:"아자부다이 1-3-1 타워플라자 3F",q:"麻布台ヒルズ タワープラザ",move:"히비야선 카미야초역 직결"},
-  {t:"17:00",k:"야외",name:"도쿄 미드타운 가든테라스",addr:"아카사카 9-7-1",q:"東京ミッドタウン ガーデンテラス",move:"롯폰기로 되돌아감",note:"해질 무렵에 맞춰 조정"},
-  {t:"18:30",k:"야경",name:"모리 미술관",addr:"롯폰기 6-10-1 모리타워 53F",q:"森美術館 六本木ヒルズ森タワー",move:"도보 5분",note:"22시까지 · 시티뷰 야경"},
-  {t:"21:00",k:"바",name:"Andaz 루프탑 바",addr:"토라노몬 1-23-4 51F",q:"Rooftop Bar Andaz Tokyo Toranomon Hills",move:"히비야선 토라노몬힐즈역 직결"}]},
- {n:4,title:"우에노 · 니혼바시 · 출국",meta:"마지막 먹거리와 쇼핑 후 공항으로 가는 날",items:[
-  {t:"09:30",k:"화과자",name:"토린도 우에노점",addr:"우에노사쿠라기 1-5-7",q:"桃林堂 上野店",move:"치요다선 신오차노미즈 → 네즈역, 도보 8분"},
-  {t:"11:00",k:"쇼핑",name:"STUDIO UAMOU (2k540)",addr:"우에노 5-9-9",q:"STUDIO UAMOU 2k540 AKI-OKA ARTISAN",move:"긴자선 스에히로초역 도보 4분"},
-  {t:"12:00",k:"점심",name:"츠지한 니혼바시 본점 (해산물 덮밥)",addr:"니혼바시 3-1-15 1F",q:"日本橋海鮮丼 つじ半 日本橋本店",move:"긴자선 니혼바시역 도보 3분",note:"웨이팅 1시간 · 10시 오픈, 일찍 도착 권장"},
-  {t:"14:00",k:"숙소",name:"숙소 짐 픽업",addr:"칸다 스다초 2-19-4",q:"ヴィアイン秋葉原 神田須田町2-19-4",move:"니혼바시 → 긴자선 칸다 1정거장"},
-  {t:"15:00",k:"출국",name:"공항 이동",addr:"나리타 15:00 · 하네다 16:00 출발 권장",q:"成田国際空港",move:"20:10 비행기 · 3시간 전 도착"}]}
+ {n:1,date:"8월 25일 (화)",title:"아키하바라 · 마루노우치 · 긴자",meta:"체크인하고 도쿄 첫 분위기 가볍게 즐기는 날",items:[
+  {t:"13:00",k:"숙소",ic:"hotel",ph:"hotel",name:"숙소 짐 맡기기",addr:"칸다 스다초 2-19-4",q:"ヴィアイン秋葉原 神田須田町2-19-4",move:"공항에서 이동 · 아와지초 / 오가와마치역 도보 4분"},
+  {t:"13:30",k:"점심",ic:"ramen",ph:"ramen",name:"키칸보 (매운 미소라멘)",addr:"카지초 2-10-9",q:"カラシビ味噌らー麺 鬼金棒 神田本店",move:"숙소에서 도보 6분"},
+  {t:"15:00",k:"카페",ic:"coffee",ph:"cafe",name:"에고랜드 카페 아키하바라",addr:"칸다사쿠마초 4-7-3 1F",q:"Egoland Cafe Akihabara 神田佐久間町4-7-3",move:"도보 12분"},
+  {t:"16:30",k:"쇼핑",ic:"shop",ph:"shop",name:"굿디자인스토어 (KITTE 마루노우치 3F)",addr:"마루노우치 2-7-2",q:"Good Design Store TOKYO by NOHARA KITTE丸の内",move:"마루노우치선 도쿄역 도보 1분"},
+  {t:"17:00",k:"전시",ic:"museum",ph:"museum",name:"GOOD DESIGN Marunouchi",addr:"마루노우치 3-4-1 신국제빌딩 1F",q:"GOOD DESIGN Marunouchi 新国際ビル",move:"도보 8분"},
+  {t:"17:40",k:"쇼핑",ic:"shop",ph:"shop",name:"긴자 이토야",addr:"긴자 2-7-15",q:"銀座・伊東屋 銀座2-7-15",move:"도보 8분"},
+  {t:"19:00",k:"저녁",ic:"rice",ph:"rest",name:"#카츠동은 사람을 행복하게 한다 긴자점",addr:"긴자 6-12-2 B1F",q:"#カツ丼は人を幸せにする 銀座店",move:"도보 8분 · 귀가는 긴자선"}]},
+
+ {n:2,date:"8월 26일 (수)",title:"시부야 · 오모테산도 · 다이칸야마",meta:"낮엔 감성 동네, 저녁엔 친구 커플과 넷이 만나는 날",items:[
+  {t:"09:00",k:"아침",ic:"pancake",ph:"cafe",name:"시아와세노 팬케이크 시부야점",addr:"도겐자카 1-18-8 3F",q:"幸せのパンケーキ渋谷店",move:"아와지초 마루노우치선 → 아카사카미츠케 환승 긴자선 시부야, 도보 4분",note:"오픈런 권장 · 대기 20~40분"},
+  {t:"11:00",k:"쇼핑",ic:"plaza",ph:"shop",name:"시부야 히카리에",addr:"시부야 2-21-1",q:"渋谷ヒカリエ",move:"시부야역 직결"},
+  {t:"12:30",k:"점심",ic:"rice",ph:"rest",name:"이꾸라 시부야점 (함박 · 오므라이스)",addr:"마루야마초 5-3 1F",q:"いくら渋谷店 はんばーぐ&おむらいすのお店",move:"도보 8분"},
+  {t:"14:00",k:"쇼핑",ic:"plaza",ph:"shop",name:"도큐 플라자 오모테산도 — 구글스토어 1F · 치이카와 베이커리 3F",addr:"진구마에 4-30-3",q:"東急プラザ表参道 オモカド",move:"긴자선 시부야 → 오모테산도 1정거장, 도보 7분",note:"두 곳이 같은 건물"},
+  {t:"15:00",k:"쇼핑",ic:"shop",ph:"shop",name:"모마 디자인 스토어",addr:"진구마에 5-10-1 GYRE 3F",q:"MoMA Design Store 表参道 GYRE",move:"도보 5분"},
+  {t:"15:40",k:"전시",ic:"museum",ph:"museum",name:"네즈미술관 · 네즈카페",addr:"미나미아오야마 6-5-1",q:"根津美術館",move:"도보 8분",note:"16:30 최종입장 · 수요일 정상 운영"},
+  {t:"17:00",k:"서점",ic:"book",ph:"shop",name:"다이칸야마 츠타야 서점",addr:"사루가쿠초 17-5",q:"代官山 蔦屋書店",move:"긴자선 시부야 후 도보 15분 (도요코선은 패스 미적용)"},
+  {t:"18:40",k:"이동",ic:"move",ph:"move",name:"시부야로 복귀",addr:"시부야역",q:"渋谷駅",move:"다이칸야마에서 도보 15분 · 약속 20분 전 도착 목표"},
+  {t:"19:00",k:"저녁 약속",ic:"friends",ph:"friends",name:"친구 커플과 저녁 (넷이서)",addr:"시부야역 근처 · 식당 미정",q:"渋谷駅",tbd:"식당 미정 — 친구가 정하면 여기 채우기",move:"일본인 친구와 그의 남자친구, 나와 내 남자친구 넷이서",note:"시부야역 근처 · 예약 여부 미리 확인"}]},
+
+ {n:3,date:"8월 27일 (목)",title:"시바 · 히비야 · 롯폰기 · 토라노몬",meta:"공원부터 디자인, 야경까지 알차게 도는 날",items:[
+  {t:"09:30",k:"공원",ic:"park",ph:"out",name:"시바 공원",addr:"시바코엔 4-10-17",q:"芝公園 港区芝公園4-10-17",move:"신주쿠선 → 진보초 환승 미타선 시바코엔역 도보 2분"},
+  {t:"11:00",k:"전시",ic:"museum",ph:"museum",name:"MoN 타카나와",addr:"미타 3-16-1",q:"MoN Takanawa The Museum of Narratives",move:"미타선 2정거장 미타역 도보 8분",note:"유일한 왕복 구간 · 시간 빠듯하면 생략"},
+  {t:"12:30",k:"점심",ic:"rest",ph:"rest",name:"DONA 히비야 (이탈리안)",addr:"유라쿠초 1-2-5 B1F",q:"イタリアンダイニングドナ 日比谷店",move:"미타선 히비야역 도보 2분"},
+  {t:"14:00",k:"전시",ic:"museum",ph:"museum",name:"21_21 DESIGN SIGHT",addr:"아카사카 9-7-6 도쿄 미드타운",q:"21_21 DESIGN SIGHT",move:"히비야선 롯폰기역 도보 5분",note:"화요일 휴관 · 목요일이라 정상 운영"},
+  {t:"15:30",k:"쇼핑",ic:"shop",ph:"shop",name:"아자부다이 힐즈 + The Conran Shop 3F",addr:"아자부다이 1-3-1 타워플라자 3F",q:"麻布台ヒルズ タワープラザ",move:"히비야선 카미야초역 직결"},
+  {t:"17:00",k:"야외",ic:"park",ph:"out",name:"도쿄 미드타운 가든테라스",addr:"아카사카 9-7-1",q:"東京ミッドタウン ガーデンテラス",move:"롯폰기로 되돌아감",note:"8월 말 일몰 18:15 전후"},
+  {t:"18:30",k:"야경",ic:"night",ph:"museum",name:"모리 미술관",addr:"롯폰기 6-10-1 모리타워 53F",q:"森美術館 六本木ヒルズ森タワー",move:"도보 5분",note:"22시까지 · 시티뷰 야경"},
+  {t:"21:00",k:"바",ic:"bar",ph:"bar",name:"Andaz 루프탑 바",addr:"토라노몬 1-23-4 51F",q:"Rooftop Bar Andaz Tokyo Toranomon Hills",move:"히비야선 토라노몬힐즈역 직결"}]},
+
+ {n:4,date:"8월 28일 (금)",title:"우에노 · 니혼바시 · 출국",meta:"마지막 먹거리와 쇼핑 후 공항으로 가는 날",items:[
+  {t:"09:30",k:"화과자",ic:"sweets",ph:"cafe",name:"토린도 우에노점",addr:"우에노사쿠라기 1-5-7",q:"桃林堂 上野店",move:"치요다선 신오차노미즈 → 네즈역, 도보 8분"},
+  {t:"11:00",k:"쇼핑",ic:"shop",ph:"shop",name:"STUDIO UAMOU (2k540)",addr:"우에노 5-9-9",q:"STUDIO UAMOU 2k540 AKI-OKA ARTISAN",move:"긴자선 스에히로초역 도보 4분"},
+  {t:"12:00",k:"점심",ic:"rice",ph:"rest",name:"츠지한 니혼바시 본점 (해산물 덮밥)",addr:"니혼바시 3-1-15 1F",q:"日本橋海鮮丼 つじ半 日本橋本店",move:"긴자선 니혼바시역 도보 3분",note:"웨이팅 1시간 · 10시 오픈, 일찍 도착 권장"},
+  {t:"14:00",k:"숙소",ic:"hotel",ph:"hotel",name:"숙소 짐 픽업",addr:"칸다 스다초 2-19-4",q:"ヴィアイン秋葉原 神田須田町2-19-4",move:"니혼바시 → 긴자선 칸다 1정거장"},
+  {t:"15:00",k:"출국",ic:"plane",ph:"move",name:"공항 이동",addr:"나리타 15:00 · 하네다 16:00 출발 권장",q:"成田国際空港",move:"20:10 비행기 · 3시간 전 도착"}]}
 ];
+
+const ICONS={hotel:"ic-hotel",ramen:"ic-ramen",coffee:"ic-coffee",shop:"ic-shop",museum:"ic-museum",
+  rice:"ic-rice",pancake:"ic-pancake",plaza:"ic-plaza",book:"ic-book",friends:"ic-friends",
+  park:"ic-park",night:"ic-night",bar:"ic-bar",sweets:"ic-sweets",plane:"ic-plane",
+  move:"ic-plane",rest:"ic-rice"};
 
 const heart='<svg class="heart"><use href="#i-heart"/></svg>';
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mapUrl=q=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
 
+/* 렌더 */
+const flat=[];
 document.getElementById('list').innerHTML=DAYS.map(d=>`
 <section class="day" id="day${d.n}">
-  <div class="day-head"><span class="day-num">DAY ${d.n}</span><span class="day-rule"></span></div>
+  <div class="day-head"><span class="day-num">DAY ${d.n} · ${esc(d.date)}</span><span class="day-rule"></span></div>
   <h2 class="day-title">${esc(d.title)}</h2>
   <p class="day-meta">${esc(d.meta)}</p>
-  ${d.items.map(it=>`
-  <article class="item" data-day="${d.n}" data-s="${esc((it.name+' '+it.addr+' '+it.move+' '+it.k+' '+(it.note||'')).toLowerCase())}">
-    <div class="time">${it.t}</div>
-    <div>
-      <p class="kind">${esc(it.k)}</p>
-      <p class="name">${esc(it.name)}</p>
-      <a class="addr" target="_blank" rel="noopener"
-         href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.q)}">
-        ${heart}<span>${esc(it.addr)}</span><span class="go">지도 열기 ↗</span>
-      </a>
-      <p class="move">${esc(it.move)}</p>
-      ${it.note?`<p class="note">${heart}<span>${esc(it.note)}</span></p>`:''}
-    </div>
-  </article>`).join('')}
+  ${d.items.map(it=>{
+    const id=flat.push({...it,day:d.n,date:d.date})-1;
+    return `
+  <button class="item" data-id="${id}" data-day="${d.n}"
+    data-s="${esc((it.name+' '+it.addr+' '+it.move+' '+it.k+' '+(it.note||'')).toLowerCase())}">
+    <span class="time">${it.t}</span>
+    <span>
+      <span class="kind">${esc(it.k)}</span>
+      <span class="name" style="display:block">${esc(it.name)}</span>
+      ${it.tbd?`<span class="tbd">${esc(it.tbd)}</span>`:
+        `<span class="addr-row">${heart}<span>${esc(it.addr)}</span><span class="go">지도 ↗</span></span>`}
+      <span class="move" style="display:block">${esc(it.move)}</span>
+      ${it.note?`<span class="note">${heart}<span>${esc(it.note)}</span></span>`:''}
+    </span>
+    <span class="thumb"><svg><use href="#${ICONS[it.ic]||'ic-shop'}"/></svg></span>
+  </button>`;}).join('')}
 </section>`).join('');
 
+/* 필터 */
 const chips=document.getElementById('chips');
 chips.innerHTML=`<button class="chip" data-day="0" aria-pressed="true">${heart}<span>전체</span></button>`+
-  DAYS.map(d=>`<button class="chip" data-day="${d.n}" aria-pressed="false">${heart}<span>Day ${d.n}</span></button>`).join('');
+  DAYS.map(d=>`<button class="chip" data-day="${d.n}" aria-pressed="false">${heart}<span>Day ${d.n}</span><small>${d.date.replace('8월 ','').replace('일 ',' ')}</small></button>`).join('');
 
 let activeDay=0;
 const q=document.getElementById('q'), emptyEl=document.getElementById('empty'), clearBtn=document.getElementById('clear');
-
 function apply(){
   const term=q.value.trim().toLowerCase();
   let shown=0;
@@ -357,46 +505,67 @@ chips.addEventListener('click',e=>{
 q.addEventListener('input',apply);
 clearBtn.addEventListener('click',()=>{q.value='';apply();q.focus();});
 
-/* ───────── 온보딩 모션 ───────── */
+/* 상세 시트 */
+const sheet=document.getElementById('sheet');
+const panel=sheet.querySelector('.panel');
+function openSheet(it){
+  document.getElementById('sheetIcon').innerHTML=`<use href="#${ICONS[it.ic]||'ic-shop'}"/>`;
+  document.getElementById('sheetKind').textContent=it.k;
+  document.getElementById('sheetName').textContent=it.name;
+  document.getElementById('sheetWhen').textContent=`Day ${it.day} · ${it.date} · ${it.t}  ·  ${it.tbd?'장소 미정':it.addr}`;
+  const map=document.getElementById('sheetMap');
+  map.href=mapUrl(it.q);
+  map.innerHTML=heart+(it.tbd?'시부야역 지도 열기':'구글 지도 열기');
+  document.getElementById('sheetMove').textContent=it.move+(it.note?' · '+it.note:'');
+  document.getElementById('sheetPh').innerHTML=(P[it.ph]||P.rest).map(([jp,rd,ko])=>
+    `<div class="ph"><p class="jp">${esc(jp)}</p><p class="rd">${esc(rd)}</p><p class="ko">${esc(ko)}</p></div>`).join('');
+  panel.scrollTop=0;
+  sheet.classList.add('open');
+  document.body.classList.add('locked');
+  requestAnimationFrame(()=>sheet.classList.add('in'));
+}
+function closeSheet(){
+  sheet.classList.remove('in');
+  document.body.classList.remove('locked');
+  setTimeout(()=>sheet.classList.remove('open'),330);
+}
+document.getElementById('list').addEventListener('click',e=>{
+  const link=e.target.closest('.addr-row');
+  const card=e.target.closest('.item');
+  if(!card)return;
+  if(link){ window.open(mapUrl(flat[+card.dataset.id].q),'_blank','noopener'); return; }
+  openSheet(flat[+card.dataset.id]);
+});
+sheet.addEventListener('click',e=>{ if(e.target.closest('[data-close]'))closeSheet(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&sheet.classList.contains('open'))closeSheet(); });
+
+/* 온보딩 */
 const POSE=[
-  {x:'-14px',y:'10px',r:'-9deg'},
-  {x:'16px', y:'-8px', r:'7deg'},
-  {x:'-8px', y:'-14px',r:'-4deg'},
-  {x:'12px', y:'12px', r:'10deg'},
-  {x:'-16px',y:'-4px', r:'-6deg'},
-  {x:'8px',  y:'-12px',r:'4deg'},
-  {x:'0px',  y:'0px',  r:'-1deg'}
+  {x:'-14px',y:'10px',r:'-9deg'},{x:'16px',y:'-8px',r:'7deg'},{x:'-8px',y:'-14px',r:'-4deg'},
+  {x:'12px',y:'12px',r:'10deg'},{x:'-16px',y:'-4px',r:'-6deg'},{x:'8px',y:'-12px',r:'4deg'},
+  {x:'0px',y:'0px',r:'-1deg'}
 ];
-const stack=document.getElementById('stack');
-const introType=document.getElementById('introType');
-const intro=document.getElementById('intro');
-
+const stack=document.getElementById('stack'), introType=document.getElementById('introType'), intro=document.getElementById('intro');
 stack.innerHTML=POSE.map((p,i)=>
-  `<img src="photos/p${i+1}.jpg" alt="" decoding="async"
-    style="--i:${i};--x:${p.x};--y:${p.y};--r:${p.r}">`).join('');
-
+  `<img src="photos/p${i+1}.jpg" alt="" decoding="async" style="--i:${i};--x:${p.x};--y:${p.y};--r:${p.r}">`).join('');
+function endIntro(){
+  if(intro.classList.contains('done'))return;
+  intro.classList.add('done');
+  try{sessionStorage.setItem('tk','1');}catch(e){}
+}
 function play(){
   stack.classList.add('go');
   const last=(POSE.length-1)*115+380;
   setTimeout(()=>{stack.classList.add('settle');introType.classList.add('in');},last);
   setTimeout(endIntro,last+2000);
 }
-function endIntro(){
-  if(intro.classList.contains('done'))return;
-  intro.classList.add('done');
-  try{sessionStorage.setItem('tk','1');}catch(e){}
-}
-
 let seen=false;
 try{seen=sessionStorage.getItem('tk')==='1';}catch(e){}
-if(seen){
-  intro.style.transition='none';
-  intro.classList.add('done');
-}else{
+if(seen){intro.style.transition='none';intro.classList.add('done');}
+else{
   document.getElementById('skip').addEventListener('click',endIntro);
   const imgs=[...stack.querySelectorAll('img')];
-  const ready=Promise.all(imgs.map(im=>im.decode().catch(()=>{})));
-  Promise.race([ready,new Promise(r=>setTimeout(r,2500))]).then(play);
+  Promise.race([Promise.all(imgs.map(im=>im.decode().catch(()=>{}))),new Promise(r=>setTimeout(r,2500))]).then(play);
 }
 </script>
 </body>
