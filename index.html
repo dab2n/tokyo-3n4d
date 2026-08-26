@@ -190,15 +190,15 @@ footer{
 }
 
 /* ───────────── 상세 시트 ───────────── */
-#sheet{
+#sheet,#editSheet{
   position:fixed;inset:0;z-index:70;display:none;
 }
-#sheet.open{display:block}
+#sheet.open,#editSheet.open{display:block}
 .veil{
   position:absolute;inset:0;background:rgba(11,11,12,.32);
   opacity:0;transition:opacity .3s ease;
 }
-#sheet.in .veil{opacity:1}
+#sheet.in .veil,#editSheet.in .veil{opacity:1}
 .panel{
   position:absolute;left:0;right:0;bottom:0;
   max-width:620px;margin:0 auto;
@@ -207,7 +207,7 @@ footer{
   transform:translateY(100%);transition:transform .36s cubic-bezier(.22,1,.36,1);
   padding-bottom:calc(28px + env(safe-area-inset-bottom));
 }
-#sheet.in .panel{transform:none}
+#sheet.in .panel,#editSheet.in .panel{transform:none}
 .grip{width:38px;height:4px;border-radius:99px;background:var(--hair);margin:10px auto 0}
 .hero{
   margin:18px 20px 0;height:132px;border-radius:16px;
@@ -259,20 +259,21 @@ body.editing .edittools{display:flex}
   padding:8px 12px;border-radius:9px;cursor:pointer;
 }
 .edithint{flex:1 1 100%;font-size:11.5px;color:var(--muted);font-weight:500;line-height:1.5}
+.day-add{
+  display:none;flex:0 0 auto;width:30px;height:30px;border-radius:9px;
+  border:1px solid var(--ink);background:var(--ink);color:#fff;
+  font-size:19px;line-height:1;place-items:center;cursor:pointer;
+  font-family:inherit;padding:0;
+}
+body.editing .day-add{display:grid}
+body.editing .thumb{display:none}
 .del{
-  display:none;position:absolute;top:6px;right:0;z-index:3;
-  width:27px;height:27px;border-radius:8px;
-  border:1px solid #f0cccc;background:#fff;color:#c0392b;
-  font-size:17px;line-height:1;place-items:center;cursor:pointer;
+  display:none;position:absolute;top:50%;right:0;transform:translateY(-50%);z-index:3;
+  width:34px;height:34px;border-radius:10px;
+  border:1px solid #eec4c4;background:#fff5f5;color:#d63b3b;
+  font-size:20px;line-height:1;place-items:center;cursor:pointer;
 }
 body.editing .del{display:grid}
-body.editing .item{padding-right:34px}
-.add-item{
-  display:none;width:100%;margin-top:14px;
-  font-family:inherit;letter-spacing:inherit;font-size:13px;font-weight:700;color:var(--ink-2);
-  border:1px dashed var(--muted);background:var(--field);border-radius:12px;padding:13px;cursor:pointer;
-}
-body.editing .add-item{display:block}
 .form-row{margin-top:14px}
 .form-row label{display:block;font-size:11.5px;font-weight:700;color:var(--ink-2);margin:0 0 6px}
 .form-row input,.form-row select,.form-row textarea{
@@ -567,7 +568,7 @@ function buildList(){
   flat.length=0;
   listEl.innerHTML=DAYS.map(d=>`
 <section class="day" id="day${d.n}">
-  <div class="day-head"><span class="day-num">DAY ${d.n} · ${esc(d.date)}</span><span class="day-rule"></span></div>
+  <div class="day-head"><span class="day-num">DAY ${d.n} · ${esc(d.date)}</span><span class="day-rule"></span><button class="day-add" type="button" data-add="${d.n}" aria-label="Day ${d.n}에 일정 추가">＋</button></div>
   <h2 class="day-title">${esc(d.title)}</h2>
   <p class="day-meta">${esc(d.meta)}</p>
   ${dayItems(d).map(it=>{
@@ -588,7 +589,6 @@ function buildList(){
     <span class="thumb"><svg><use href="#${ICONS[it.ic]||'ic-shop'}"/></svg></span>
     <span class="del" role="button" tabindex="-1" data-del="${esc(key)}" data-dday="${d.n}" aria-label="일정 삭제">×</span>
   </button>`;}).join('')}
-  <button class="add-item" type="button" data-add="${d.n}">＋ 일정 추가</button>
 </section>`).join('');
 }
 buildList();
@@ -654,7 +654,7 @@ function closeSheet(){
 listEl.addEventListener('click',e=>{
   const del=e.target.closest('.del');
   if(del){e.preventDefault();e.stopPropagation();removeItem(del.dataset.del,+del.dataset.dday);return;}
-  const add=e.target.closest('.add-item');
+  const add=e.target.closest('.day-add');
   if(add){openAdd(+add.dataset.add);return;}
   const link=e.target.closest('.addr-row');
   const card=e.target.closest('.item');
