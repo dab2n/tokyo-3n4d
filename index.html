@@ -243,6 +243,50 @@ footer{
   font-family:inherit;letter-spacing:inherit;font-size:14px;font-weight:600;cursor:pointer;
 }
 
+/* ───────────── 편집 기능 ───────────── */
+.headright{display:flex;align-items:center;gap:9px}
+.editbtn{
+  font-family:inherit;letter-spacing:inherit;font-size:12px;font-weight:700;
+  border:1px solid var(--hair);background:#fff;color:var(--ink-2);
+  padding:7px 14px;border-radius:100px;cursor:pointer;white-space:nowrap;
+}
+body.editing .editbtn{background:var(--ink);border-color:var(--ink);color:#fff}
+.edittools{display:none;gap:7px;flex-wrap:wrap;align-items:center;padding:0 0 14px}
+body.editing .edittools{display:flex}
+.edittools button{
+  font-family:inherit;letter-spacing:inherit;font-size:12px;font-weight:600;
+  border:1px solid var(--hair);background:#fff;color:var(--ink-2);
+  padding:8px 12px;border-radius:9px;cursor:pointer;
+}
+.edithint{flex:1 1 100%;font-size:11.5px;color:var(--muted);font-weight:500;line-height:1.5}
+.del{
+  display:none;position:absolute;top:6px;right:0;z-index:3;
+  width:27px;height:27px;border-radius:8px;
+  border:1px solid #f0cccc;background:#fff;color:#c0392b;
+  font-size:17px;line-height:1;place-items:center;cursor:pointer;
+}
+body.editing .del{display:grid}
+body.editing .item{padding-right:34px}
+.add-item{
+  display:none;width:100%;margin-top:14px;
+  font-family:inherit;letter-spacing:inherit;font-size:13px;font-weight:700;color:var(--ink-2);
+  border:1px dashed var(--muted);background:var(--field);border-radius:12px;padding:13px;cursor:pointer;
+}
+body.editing .add-item{display:block}
+.form-row{margin-top:14px}
+.form-row label{display:block;font-size:11.5px;font-weight:700;color:var(--ink-2);margin:0 0 6px}
+.form-row input,.form-row select,.form-row textarea{
+  width:100%;font-family:inherit;letter-spacing:inherit;font-size:15px;font-weight:400;
+  padding:11px 12px;border:1px solid var(--hair);border-radius:11px;background:var(--field);color:var(--ink);
+}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{background:#fff;border-color:var(--ink);outline:none}
+.form-row textarea{min-height:58px;resize:vertical}
+.form-two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.form-save{
+  width:100%;margin-top:22px;padding:14px;border-radius:13px;border:0;
+  background:var(--ink);color:#fff;font-family:inherit;letter-spacing:inherit;font-size:14px;font-weight:700;cursor:pointer;
+}
+
 @media (prefers-reduced-motion:reduce){
   .stack.go img{animation-duration:.01ms;animation-delay:0s}
   .stack,.intro-type,#intro,.panel,.veil{transition:none}
@@ -290,7 +334,10 @@ footer{
   <div class="wrap">
     <div class="brandline">
       <h1 class="brand"><svg class="heart"><use href="#i-heart"/></svg>도쿄 3박 4일</h1>
-      <span class="stay">8.25 – 8.28</span>
+      <div class="headright">
+        <span class="stay">8.25 – 8.28</span>
+        <button class="editbtn" id="editToggle" type="button" aria-pressed="false">편집</button>
+      </div>
     </div>
     <div class="search-wrap">
       <svg class="s-ico"><use href="#i-search"/></svg>
@@ -298,6 +345,12 @@ footer{
       <button class="s-clear" id="clear" aria-label="검색어 지우기">×</button>
     </div>
     <div class="chips" id="chips"></div>
+    <div class="edittools" id="edittools">
+      <span class="edithint">＋ 로 일정을 추가하고, 각 일정의 × 로 삭제해요. 변경 내용은 이 브라우저에 저장됩니다. 다른 기기와 맞추려면 ‘내보내기 → 불러오기’를 쓰세요.</span>
+      <button id="edExport" type="button">내보내기</button>
+      <button id="edImport" type="button">불러오기</button>
+      <button id="edReset" type="button">기본 일정으로 초기화</button>
+    </div>
   </div>
 </header>
 
@@ -307,7 +360,7 @@ footer{
 <footer>
   대부분 도쿄메트로 · 토에이 패스로 이동 · 도요코선과 이노카시라선만 IC카드 별도<br>
   휴관일 확인 완료 — UAMOU 수휴 · 네즈 월휴 · 21_21 화휴 모두 방문일과 겹치지 않음<br>
-  스카이라이너는 왕복 모두 지정석 발권 필요 · 귀국편 TW238 20:10
+  스카이라이너는 왕복 모두 지정석 발권 필요 · 귀국편 오후 5시(17:00) 출발
 </footer>
 
 <div id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetName">
@@ -326,6 +379,29 @@ footer{
       <div class="ph-head"><svg class="heart"><use href="#i-heart"/></svg><span>여기서 쓸 일본어</span></div>
       <div id="sheetPh"></div>
       <button class="sheet-close" data-close>닫기</button>
+    </div>
+  </div>
+</div>
+
+<div id="editSheet" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+  <div class="veil" data-eclose></div>
+  <div class="panel">
+    <div class="grip"></div>
+    <div class="sheet-body">
+      <h2 class="sheet-name" id="editTitle">일정 추가</h2>
+      <p class="sheet-when" id="editDayLabel"></p>
+      <div class="form-two">
+        <div class="form-row"><label>시간</label><input id="fTime" type="time"></div>
+        <div class="form-row"><label>구분(아이콘)</label><select id="fCat"></select></div>
+      </div>
+      <div class="form-row"><label>구분 표시 (선택)</label><input id="fKind" type="text" placeholder="예: 점심 · 카페 · 쇼핑"></div>
+      <div class="form-row"><label>장소 이름</label><input id="fName" type="text" placeholder="예: 긴자 텐류"></div>
+      <div class="form-row"><label>주소</label><input id="fAddr" type="text" placeholder="예: 긴자 2-5-19 4F"></div>
+      <div class="form-row"><label>지도 검색어 (선택)</label><input id="fQ" type="text" placeholder="비우면 장소 이름으로 검색해요"></div>
+      <div class="form-row"><label>이동 (선택)</label><input id="fMove" type="text" placeholder="예: 도보 · 히비야선"></div>
+      <div class="form-row"><label>메모 (선택)</label><textarea id="fNote" placeholder="영업시간 · 예약 여부 등"></textarea></div>
+      <button class="form-save" id="fSave" type="button">추가하기</button>
+      <button class="sheet-close" data-eclose type="button">취소</button>
     </div>
   </div>
 </div>
@@ -450,14 +526,14 @@ const DAYS=[
   {t:"22:00",k:"숙소",ic:"hotel",ph:"hotel",name:"숙소 복귀 및 휴식",addr:"칸다 스다초 2-19-4",q:"ヴィアイン秋葉原 神田須田町2-19-4",move:"도쿄메트로 히비야선 (메트로 패스)"}]},
 
  {n:4,date:"8월 28일 (금)",title:"긴자 · 출국",meta:"긴자에서 마지막 쇼핑과 티타임 후 공항으로 가는 날",items:[
-  {t:"10:00",k:"숙소",ic:"hotel",ph:"checkout",name:"체크아웃 (호텔 짐 보관)",addr:"칸다 스다초 2-19-4",q:"ヴィアイン秋葉原 神田須田町2-19-4",move:"짐은 프런트에 맡기고 출발"},
-  {t:"10:30",k:"쇼핑",ic:"shop",ph:"shop",name:"긴자 쇼핑 (무인양품 · 이토야)",addr:"긴자 3-3-5 · 긴자 2-7-15",q:"無印良品 銀座",move:"도쿄메트로 히비야선 (메트로 패스)",note:"무인양품 10:00 · 이토야 11:00 오픈"},
-  {t:"12:30",k:"점심",ic:"rest",ph:"rest",name:"긴자 텐류 (교자) 또는 카츠동 긴자점",addr:"긴자 2-5-19 4F · 긴자 6-12-2 B1F",q:"銀座天龍 本店",move:"도보",note:"11:00 ~ 21:00 · 둘 중 그날 컨디션대로"},
-  {t:"14:30",k:"티타임",ic:"sweets",ph:"cafe",name:"웨스트 긴자본점",addr:"긴자 7-3-6",q:"銀座ウエスト 銀座本店",move:"도보",note:"09:00 ~ 22:00 · 슈크림과 커피 리필"},
-  {t:"15:30",k:"이동",ic:"hotel",ph:"checkout",name:"숙소 짐 픽업 후 우에노역 이동",addr:"칸다 스다초 2-19-4 → 게이세이 우에노역",q:"京成上野駅",move:"도쿄메트로 히비야선 (메트로 패스)",note:"여기서 메트로 패스 사용 종료"},
-  {t:"16:30",k:"이동",ic:"plane",ph:"train",name:"공항으로 이동",addr:"게이세이 우에노역 → 나리타",q:"京成上野駅",move:"스카이라이너 (게이세이 우에노 → 나리타)",note:"지정석 발권 필수 · 약 45분"},
-  {t:"17:30",k:"수속",ic:"plane",ph:"air",name:"나리타 공항 T2 수속",addr:"나리타 국제공항 제2터미널",q:"成田国際空港 第2ターミナル",move:"체크인 · 보안 · 출국 심사"},
-  {t:"20:10",k:"출국",ic:"plane",ph:"air",name:"도쿄 출발 (TW238)",addr:"나리타 국제공항 제2터미널",q:"成田国際空港 第2ターミナル",move:"티웨이항공 TW238"}]}
+  {t:"09:30",k:"숙소",ic:"hotel",ph:"checkout",name:"체크아웃 (호텔 짐 보관)",addr:"칸다 스다초 2-19-4",q:"ヴィアイン秋葉原 神田須田町2-19-4",move:"짐은 프런트에 맡기고 출발"},
+  {t:"10:00",k:"쇼핑",ic:"shop",ph:"shop",name:"긴자 쇼핑 (무인양품 · 이토야)",addr:"긴자 3-3-5 · 긴자 2-7-15",q:"無印良品 銀座",move:"도쿄메트로 히비야선 (메트로 패스)",note:"무인양품 10:00 · 이토야 11:00 오픈"},
+  {t:"11:15",k:"점심",ic:"rest",ph:"rest",name:"긴자 텐류 (교자) 또는 카츠동 긴자점",addr:"긴자 2-5-19 4F · 긴자 6-12-2 B1F",q:"銀座天龍 本店",move:"도보",note:"11:00 ~ 21:00 · 둘 중 그날 컨디션대로"},
+  {t:"12:15",k:"티타임",ic:"sweets",ph:"cafe",name:"웨스트 긴자본점",addr:"긴자 7-3-6",q:"銀座ウエスト 銀座本店",move:"도보",note:"09:00 ~ 22:00 · 슈크림과 커피 리필"},
+  {t:"13:00",k:"이동",ic:"hotel",ph:"checkout",name:"숙소 짐 픽업 후 우에노역 이동",addr:"칸다 스다초 2-19-4 → 게이세이 우에노역",q:"京成上野駅",move:"도쿄메트로 히비야선 (메트로 패스)",note:"여기서 메트로 패스 사용 종료"},
+  {t:"13:40",k:"이동",ic:"plane",ph:"train",name:"공항으로 이동",addr:"게이세이 우에노역 → 나리타",q:"京成上野駅",move:"스카이라이너 (게이세이 우에노 → 나리타)",note:"지정석 발권 필수 · 약 45분"},
+  {t:"14:30",k:"수속",ic:"plane",ph:"air",name:"나리타 공항 T2 수속",addr:"나리타 국제공항 제2터미널",q:"成田国際空港 第2ターミナル",move:"체크인 · 보안 · 출국 심사"},
+  {t:"17:00",k:"출국",ic:"plane",ph:"air",name:"도쿄 출발 (오후 5시 출발편)",addr:"나리타 국제공항 제2터미널",q:"成田国際空港 第2ターミナル",move:"오후 5시(17:00) 출발편으로 변경",note:"국제선 · 최소 2시간 전 도착 권장"}]}
 ];
 
 const ICONS={hotel:"ic-hotel",ramen:"ic-ramen",coffee:"ic-coffee",shop:"ic-shop",museum:"ic-museum",
@@ -469,30 +545,54 @@ const heart='<svg class="heart"><use href="#i-heart"/></svg>';
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const mapUrl=q=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
 
+/* ───────── 편집 저장소 (localStorage) ───────── */
+const CATS=[["식사","rice","rest"],["카페·디저트","coffee","cafe"],["쇼핑","shop","shop"],
+  ["관람·전시","museum","museum"],["야경·야외","night","out"],["이동","move","move"],
+  ["숙소","hotel","hotel"],["기타","shop","out"]];
+const LS_KEY='tk_edits_v1';
+function loadEdits(){try{const v=JSON.parse(localStorage.getItem(LS_KEY));if(v&&Array.isArray(v.added)&&Array.isArray(v.removed))return v;}catch(e){}return{added:[],removed:[]};}
+function saveEdits(){try{localStorage.setItem(LS_KEY,JSON.stringify(edits));}catch(e){}}
+let edits=loadEdits();
+const defId=(dn,it)=>'d'+dn+'|'+it.t+'|'+it.name;
+function dayItems(d){
+  const base=d.items.filter(it=>edits.removed.indexOf(defId(d.n,it))<0);
+  return base.concat(edits.added.filter(a=>a.day===d.n))
+    .slice().sort((a,b)=>String(a.t).localeCompare(String(b.t)));
+}
+
 /* 렌더 */
 const flat=[];
-document.getElementById('list').innerHTML=DAYS.map(d=>`
+const listEl=document.getElementById('list');
+function buildList(){
+  flat.length=0;
+  listEl.innerHTML=DAYS.map(d=>`
 <section class="day" id="day${d.n}">
   <div class="day-head"><span class="day-num">DAY ${d.n} · ${esc(d.date)}</span><span class="day-rule"></span></div>
   <h2 class="day-title">${esc(d.title)}</h2>
   <p class="day-meta">${esc(d.meta)}</p>
-  ${d.items.map(it=>{
+  ${dayItems(d).map(it=>{
     const id=flat.push({...it,day:d.n,date:d.date})-1;
+    const key=it.cid?it.cid:defId(d.n,it);
     return `
   <button class="item" data-id="${id}" data-day="${d.n}"
-    data-s="${esc((it.name+' '+it.addr+' '+it.move+' '+it.k+' '+(it.note||'')).toLowerCase())}">
-    <span class="time">${it.t}</span>
+    data-s="${esc((it.name+' '+it.addr+' '+(it.move||'')+' '+it.k+' '+(it.note||'')).toLowerCase())}">
+    <span class="time">${esc(it.t)}</span>
     <span>
       <span class="kind">${esc(it.k)}</span>
       <span class="name" style="display:block">${esc(it.name)}</span>
       ${it.tbd?`<span class="tbd">${esc(it.tbd)}</span>`:
         `<span class="addr-row">${heart}<span>${esc(it.addr)}</span><span class="go">지도 ↗</span></span>`}
-      <span class="move" style="display:block">${esc(it.move)}</span>
+      ${it.move?`<span class="move" style="display:block">${esc(it.move)}</span>`:''}
       ${it.note?`<span class="note">${heart}<span>${esc(it.note)}</span></span>`:''}
     </span>
     <span class="thumb"><svg><use href="#${ICONS[it.ic]||'ic-shop'}"/></svg></span>
+    <span class="del" role="button" tabindex="-1" data-del="${esc(key)}" data-dday="${d.n}" aria-label="일정 삭제">×</span>
   </button>`;}).join('')}
+  <button class="add-item" type="button" data-add="${d.n}">＋ 일정 추가</button>
 </section>`).join('');
+}
+buildList();
+function refresh(){buildList();apply();}
 
 /* 필터 */
 const chips=document.getElementById('chips');
@@ -551,7 +651,11 @@ function closeSheet(){
   document.body.classList.remove('locked');
   setTimeout(()=>sheet.classList.remove('open'),330);
 }
-document.getElementById('list').addEventListener('click',e=>{
+listEl.addEventListener('click',e=>{
+  const del=e.target.closest('.del');
+  if(del){e.preventDefault();e.stopPropagation();removeItem(del.dataset.del,+del.dataset.dday);return;}
+  const add=e.target.closest('.add-item');
+  if(add){openAdd(+add.dataset.add);return;}
   const link=e.target.closest('.addr-row');
   const card=e.target.closest('.item');
   if(!card)return;
@@ -560,6 +664,78 @@ document.getElementById('list').addEventListener('click',e=>{
 });
 sheet.addEventListener('click',e=>{ if(e.target.closest('[data-close]'))closeSheet(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&sheet.classList.contains('open'))closeSheet(); });
+
+/* ───────── 편집: 추가 · 삭제 ───────── */
+const editSheet=document.getElementById('editSheet');
+const fCat=document.getElementById('fCat');
+fCat.innerHTML=CATS.map((c,i)=>`<option value="${i}">${esc(c[0])}</option>`).join('');
+let addDay=1;
+function openAdd(day){
+  addDay=day;
+  document.getElementById('editDayLabel').textContent='Day '+day+' 에 새 일정 추가';
+  ['fTime','fKind','fName','fAddr','fQ','fMove','fNote'].forEach(id=>document.getElementById(id).value='');
+  fCat.value='0';
+  editSheet.classList.add('open');document.body.classList.add('locked');
+  requestAnimationFrame(()=>editSheet.classList.add('in'));
+}
+function closeAdd(){
+  editSheet.classList.remove('in');document.body.classList.remove('locked');
+  setTimeout(()=>editSheet.classList.remove('open'),330);
+}
+function removeItem(key,day){
+  if(!confirm('이 일정을 삭제할까요?'))return;
+  if(key.charAt(0)==='c'){edits.added=edits.added.filter(a=>a.cid!==key);}
+  else if(edits.removed.indexOf(key)<0){edits.removed.push(key);}
+  saveEdits();refresh();
+}
+document.getElementById('fSave').addEventListener('click',()=>{
+  const t=document.getElementById('fTime').value.trim();
+  const name=document.getElementById('fName').value.trim();
+  if(!t||!name){alert('시간과 장소 이름은 꼭 입력해 주세요.');return;}
+  const cat=CATS[+fCat.value]||CATS[7];
+  const item={
+    cid:'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+    day:addDay,t:t,
+    k:document.getElementById('fKind').value.trim()||cat[0],
+    ic:cat[1],ph:cat[2],name:name,
+    addr:document.getElementById('fAddr').value.trim()||'주소 미입력',
+    q:document.getElementById('fQ').value.trim()||name,
+    move:document.getElementById('fMove').value.trim(),
+    note:document.getElementById('fNote').value.trim()
+  };
+  edits.added.push(item);saveEdits();closeAdd();refresh();
+});
+editSheet.addEventListener('click',e=>{ if(e.target.closest('[data-eclose]'))closeAdd(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&editSheet.classList.contains('open'))closeAdd(); });
+
+/* ───────── 편집 모드 토글 · 도구 ───────── */
+const editToggle=document.getElementById('editToggle');
+editToggle.addEventListener('click',()=>{
+  const on=!document.body.classList.contains('editing');
+  document.body.classList.toggle('editing',on);
+  editToggle.setAttribute('aria-pressed',on);
+  editToggle.textContent=on?'완료':'편집';
+});
+document.getElementById('edReset').addEventListener('click',()=>{
+  if(!confirm('추가·삭제한 내용을 모두 지우고 기본 일정으로 되돌릴까요?'))return;
+  edits={added:[],removed:[]};saveEdits();refresh();
+});
+document.getElementById('edExport').addEventListener('click',()=>{
+  const s=JSON.stringify(edits);
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(s).then(
+      ()=>alert('편집 내용을 복사했어요. 다른 기기에서 ‘불러오기’에 붙여넣으면 똑같이 반영됩니다.'),
+      ()=>prompt('아래 내용을 복사하세요',s));
+  }else{prompt('아래 내용을 복사하세요',s);}
+});
+document.getElementById('edImport').addEventListener('click',()=>{
+  const s=prompt('내보낸 편집 내용을 붙여넣으세요');
+  if(!s)return;
+  try{const v=JSON.parse(s);
+    if(v&&Array.isArray(v.added)&&Array.isArray(v.removed)){edits=v;saveEdits();refresh();alert('불러왔어요.');}
+    else alert('형식이 올바르지 않아요.');
+  }catch(err){alert('형식이 올바르지 않아요.');}
+});
 
 /* 온보딩 */
 const POSE=[
